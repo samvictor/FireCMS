@@ -5,7 +5,7 @@ const pug = require('pug');
 const fs = require('fs');
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
-admin.initializeApp(functions.config().firebase);
+admin.initializeApp(functions.config().firebase, 'scms');
 const express = require('express');
 const app  = express();
 let settings = null;
