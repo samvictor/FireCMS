@@ -260,7 +260,7 @@ html(lang="en")
         div( id="alert_warning" class="alert alert-warning" role="alert")
         div( id="alert_danger" class="alert alert-danger" role="alert")
     
-    script( src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js")
+    script( src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js")
     script.
       // Initialize Firebase
       var config = {

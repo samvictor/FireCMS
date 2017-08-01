@@ -28,7 +28,7 @@ Your folder structure should look something like this:
 where "home" is just the root of your firebase directory.
 
 Inside of the scms folder, there is a file called init_settings.json (home/functions/scms/init_settings.json). 
-Change the file name from "**init_settings.json**" to "**settings.json**". 
+Copy "**init_settings.json**" and rename the copy to "**settings.json**". 
 You don't have to open or edit it yet.
 
 
@@ -38,13 +38,14 @@ Next, make sure the following dependences are in home/functions/package.json:
 	  "name": "functions",
 	  "description": "Cloud Functions for Firebase",
 	  "dependencies": {
-	    "firebase-admin": "4.2.1",
-	    "firebase-functions": "0.5.7",
-	    "pug": "2.0.0-beta11",
+	    "firebase-admin": "5.1.0",
+	    "firebase-functions": "0.6.1",
+	    "pug": "2.0.0-rc.2",
 	    "express": "4.15.3"
 	  },
 	  "private": true
 	}
+
 
 
 In home/funtions/index.js, do the following:
@@ -185,10 +186,10 @@ Here is an example of how it should look when you're done:
 		"password": "mypassword", 
 		"root": "/sub/",
 		"apiKey": "your-api-key",
-	    "authDomain": "example-id.firebaseapp.com",
-	    "databaseURL": "https://example-id.firebaseio.com",
-	    "projectId": "example-id",
-	    "template_id": "1"
+		"authDomain": "example-id.firebaseapp.com",
+		"databaseURL": "https://example-id.firebaseio.com",
+		"projectId": "example-id",
+		"template_id": "1"
 	}
 
 Notice that the root has both leading and trailing slashes. **These are important**. 
