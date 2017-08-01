@@ -148,10 +148,10 @@ By default it should look like this:
 		"password": "", 
 		"root": "",
 		"apiKey": "",
-	    "authDomain": "",
-	    "databaseURL": "",
-	    "projectId": "",
-	    "template_id": "0"
+		"authDomain": "",
+		"databaseURL": "",
+		"projectId": "",
+		"template_id": "0"
 	}
 
 * Choose a secure **email address** and **password** for the email and password fields.
