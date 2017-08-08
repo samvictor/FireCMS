@@ -159,6 +159,8 @@ By default it should look like this:
 If other people will likely see this settings file, don't worry, you can change
 this email address and password later from the firebase console. 
 You can also delete the password from this file after setup is complete.
+If you get a message saying that a user with that email address already exists, 
+change the email address in this file, deploy again, and try again.
 
 
 * For **root**, enter the subdirectory of the scms installation with both leading and trailing slashes. **If you installed scms at the root of your website (example.com/)

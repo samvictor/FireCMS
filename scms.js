@@ -20,7 +20,7 @@ catch (e) {
 		"ready": "no", 
 		"email": "", 
 		"password": "", 
-		"root": "",
+		"root": "/",
 		"apiKey": "",
 	    "authDomain": "",
 	    "databaseURL": "",

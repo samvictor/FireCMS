@@ -10,7 +10,7 @@ html(lang="en")
         meta( http-equiv="X-UA-Compatible" content="IE=edge" )
         meta( name="viewport" content="width=device-width, initial-scale=1.0" )
         
-        title SCMS Admin
+        title FCMS Admin
         
         script( src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" )
         
@@ -76,6 +76,10 @@ html(lang="en")
             	display: none;
             }
             
+            #show_pages {
+            	font-size: 20px;
+            }
+            
             .page_link {
             	cursor: pointer;
             }
@@ -113,6 +117,8 @@ html(lang="en")
             }
 
     body
+        // ============================================== BODY =======================================================
+                                    
         // slideshow images shouldn't be too wide (wider than 16:9)
         
         div( id="login" )
@@ -123,7 +129,10 @@ html(lang="en")
         
         div(id="overview")
           h1( class="site_name" )
+          h3 Pages
           div( id="show_pages" )
+          h3 Tabs
+          div( id="show_tabs" )
           
         div(id="page_view")
           h4( class="site_name" )
@@ -150,6 +159,7 @@ html(lang="en")
     
     script( src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js" )
     script.
+      // ================================================== SCRIPT ==================================================
       // Initialize Firebase
       var config = {
         apiKey: "#{apiKey}",
@@ -216,11 +226,13 @@ html(lang="en")
             if (user) {
                 // User is signed in.
                 console.log('signed in');
-                $('#loading_div').fadeIn();
+                $('#loading_div').fadeIn(200, () => {
+                    $('#login').css('display', 'none');
+                    $('.logged_in').fadeIn(80);
+                });
                 loading = true;
                 load_loop();
-                $('#login').fadeOut();
-                $('.logged_in').fadeIn(80);
+                
                 
                 firebase.database().ref('scms_data/general_info').once('value', function(snapshot) {
                     site_data = snapshot.val();
@@ -237,6 +249,10 @@ html(lang="en")
                         $('#loading_div').fadeOut();
                         return;
                     }
+                    
+                    
+                    history.replaceState({'assignment': 'overview', 'data': '', 'site_data': site_data}, 
+                                            $('title').text(), window.location.href);
                     
                     $('.site_name').text(site_data['site_name']);
                     
@@ -261,7 +277,21 @@ html(lang="en")
                         do_assignment('page', $(this).attr('page_id'));
                     });
                     
-                    $('#overview').fadeIn(80);
+                    
+                    $('#show_tabs').text('');
+                    let to_tabs = '';
+                    site_data['site_tabs'].forEach(function(tab, i){
+                        to_tabs += '<a id="tab_'+tab['id']+'" page_id="'+tab['id']+'" class="tab_link" >';
+                        to_tabs +=      tab['name'];
+                        to_tabs += '</a>';
+                        to_tabs += '<br>';
+                    });
+                    $('#show_tabs').append(to_tabs);
+                    $('.tab_link').on('click', () => {
+                        do_assignment('tab', $(this).attr('tab_id'));
+                    });
+                    
+                    $('#overview').css('display', 'block');
                     $('#loading_div').fadeOut();
                     loading = false;
                 });
@@ -289,14 +319,14 @@ html(lang="en")
         
         var curr_assignment = '';
         var curr_assign_data = '';
-        function do_assignment(assignment, assign_data) {
+        function do_assignment(assignment, assign_data, push_state = true) {
             curr_assign_data = assign_data;
             curr_assignment = assignment;
             
             if (assignment === 'page') {
             	let page_id = assign_data;
-                console.log('doing page. assign data is ', assign_data);
-                console.log('site data is ', site_data);
+                //console.log('doing page. assign data is ', assign_data);
+                //console.log('site data is ', site_data);
                 
                 $('#loading_div').fadeIn();
                 loading = true;
@@ -313,9 +343,35 @@ html(lang="en")
                     $('#page_view').fadeIn();
                     $('#loading_div').fadeOut();
                     loading = false;
+                    if (push_state)
+                        history.pushState({'assignment': 'page', 'data': assign_data}, 
+                                                page_data['name'], 
+                                                site_data['root']+'page/'+page_id );
+                });
+            }
+            else if (assignment === 'tab') {
+                $('#loading_div').fadeIn(200, () => {
+                    $('#page_view').css('display', 'none');
+                    $('#overview').css('display', 'none');
+                    
+                    $('#loading_div').fadeOut();
+                    
+                });
+            }
+            else if (assignment === 'overview') {
+                $('#loading_div').fadeIn(200, () => {
+                    $('#page_view').css('display', 'none');
+                    $('#overview').css('display', 'block');
+                    
+                    $('#loading_div').fadeOut();
                 });
             }
         }
+        
+        window.onpopstate = function (event) {
+            site_data = event.state['site_data'];
+            do_assignment(event.state['assignment'], event.state['data'], false);
+        };        
         
         $('#submit_page').on('click', function(){
             firebase.database().ref('scms_data/info_page_content/page_content/'+curr_assign_data+'/content').set( $('#content_editor').val() )

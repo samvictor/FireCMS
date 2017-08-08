@@ -303,13 +303,17 @@ html(lang="en")
                         page_data['page_content'] = '<h2>Page Not Found</h2>';
                     }
                 }
-
+                
+                // replace state
+                history.replaceState({'page_data': page_data, 'new_url': page_data['url']}, 
+                                        page_data['page_title'], page_data['url']);    
+                
                 
                 $('#page_title').text(page_data['page_title'].toUpperCase());
                 $('#page_content').html(page_data['page_content']);
                 
                 
-                if (page_data['background_image'] !== '') {
+                if (page_data['background_image'] !== '' && page_data['background_image']['url'] !== '') {
                     $('body').css('background', 'url('+page_data['background_image']['url']+') no-repeat')
                         .css('background-size', 'cover').css('background-attachment', 'fixed');
                 }
@@ -400,7 +404,7 @@ html(lang="en")
         
         // ================================== OTHER PAGE LOADS ================================
         
-        function do_assignment(assignment, assignment_data) {
+        function do_assignment(assignment, assignment_data, push_state = true) {
             switch(assignment) {
                 case 'page': 
                     loading = true;
@@ -431,8 +435,9 @@ html(lang="en")
                             $('#'+new_url+'_tab').addClass('active');
                             //setTimeout(() => $('.tab.active').css('background-color', page_data['site_color']), 100);
                             
-                            document.title = page['name'] + ' - ' + page_data['site_title'];                                   
-                            history.pushState({'page_data': page_data, 'new_url': new_url}, page_data['page_title'], page_data['root']+new_url);
+                            document.title = page['name'] + ' - ' + page_data['site_title'];
+                            if (push_state)
+                                history.pushState({'page_data': page_data, 'new_url': new_url}, page_data['page_title'], page_data['root']+new_url);
                         });
                                                 
                         if (!found) {
@@ -443,8 +448,9 @@ html(lang="en")
                             loading = false;
                             $('.tab.active').removeClass('active');
                             
-                            document.title =  '404' + ' - ' + page_data['site_title'];     
-                            history.pushState({'page_data': page_data, 'new_url': new_url}, page_data['page_title'], page_data['root']+new_url);
+                            document.title =  '404' + ' - ' + page_data['site_title']; 
+                            if (push_state)
+                                history.pushState({'page_data': page_data, 'new_url': new_url}, page_data['page_title'], page_data['root']+new_url);
                         }                            
 
                     });
@@ -460,7 +466,8 @@ html(lang="en")
                         loading = false;
                         document.title = page_data['site_title'] + ' - ' + page_data['page_title'];
                         
-                        history.pushState({'page_data': page_data}, page_data['page_title'], page_data['root']+new_url);
+                        if (push_state)
+                            history.pushState({'page_data': page_data}, page_data['page_title'], page_data['root']+new_url);
                         
                       });*/
         
@@ -469,7 +476,7 @@ html(lang="en")
         }
         
         window.onpopstate = function(event) {
-            do_assignment('page', event.state['new_url']);
+            do_assignment('page', event.state['new_url'], false);
         };    
         
             

@@ -143,7 +143,7 @@ html(lang="en")
                     data = data.split(':');
                     data[1] = data[1].trim();
                     if (data[0] === 'thumbs up') {
-                      $('#alert_success').text(data[1]).fadeIn().delay(1400).fadeOut();
+                      $('#alert_success').text(data[1]).fadeIn().delay(2400).fadeOut();
                       location.reload(true);
                     }
                     else {
