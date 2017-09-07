@@ -1,4 +1,9 @@
-# SCMS
+# SCMS - depricated
+
+Switching to an entirely static solution
+github.com/samvictor/fcms
+
+
 Sam's CMS. A Nodejs based CMS solution / Website builder (like wordpress) designed to work with Google's new firebase Hosting, Functions, and Database products. After extensive research, I've determined that this has not been done before, so I'm trying to do it myself.
 
 # Instructions
